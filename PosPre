@@ -1,0 +1,33 @@
+def evaluar_expresion(expresion, notacion='posfija'):
+    pila = []
+
+    if notacion == 'prefija':
+        expresion = expresion[::-1]
+
+    for token in expresion:
+        if token.isdigit():
+            pila.append(int(token))
+        else:
+
+            operando1 = pila.pop()
+            operando2 = pila.pop()
+
+            if token == '+':
+                pila.append(operando1 + operando2)
+            elif token == '-':
+                pila.append(operando1 - operando2)
+            elif token == '*':
+                pila.append(operando1 * operando2)
+            elif token == '/':
+                pila.append(operando1 / operando2)
+
+    return pila[0]
+
+expresion_posfija = ['2', '3', '+', '4', '*']
+expresion_prefija = ['*', '+', '2', '3', '4']
+
+resultado_posfija = evaluar_expresion(expresion_posfija, notacion='posfija')
+print(f"Resultado de la expresión posfija: {resultado_posfija}")
+
+resultado_prefija = evaluar_expresion(expresion_prefija, notacion='prefija')
+print(f"Resultado de la expresión prefija: {resultado_prefija}")
