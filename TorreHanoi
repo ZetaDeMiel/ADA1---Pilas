@@ -1,0 +1,65 @@
+class Pila:
+    def __init__(self):
+        self.items = []
+    
+    def esta_vacia(self):
+        return len(self.items) == 0
+    
+    def apilar(self, item):
+        self.items.append(item)
+    
+    def desapilar(self):
+        if not self.esta_vacia():
+            return self.items.pop()
+        else:
+            return None
+    
+    def ver_tope(self):
+        if not self.esta_vacia():
+            return self.items[-1]
+        else:
+            return None
+    
+    def tamanio(self):
+        return len(self.items)
+    
+    def __str__(self):
+        return str(self.items)
+
+class TorresDeHanoi:
+    def __init__(self, num_discos):
+        self.num_discos = num_discos
+        self.torre1 = Pila()
+        self.torre2 = Pila()
+        self.torre3 = Pila()
+
+        for disco in range(num_discos, 0, -1):
+            self.torre1.apilar(disco)
+    
+    def mover_disco(self, origen, destino, nombre_origen, nombre_destino):
+        disco = origen.desapilar()
+        if disco is not None:
+            destino.apilar(disco)
+            print(f"Mover disco {disco} de {nombre_origen} a {nombre_destino}")
+    
+    def resolver_hanoi(self, num_discos, origen, destino, auxiliar, nombre_origen, nombre_destino, nombre_auxiliar):
+        if num_discos == 1:
+            self.mover_disco(origen, destino, nombre_origen, nombre_destino)
+        else:
+            self.resolver_hanoi(num_discos - 1, origen, auxiliar, destino, nombre_origen, nombre_auxiliar, nombre_destino)
+            self.mover_disco(origen, destino, nombre_origen, nombre_destino)
+            self.resolver_hanoi(num_discos - 1, auxiliar, destino, origen, nombre_auxiliar, nombre_destino, nombre_origen)
+    
+    def jugar(self):
+        print("Estado inicial:")
+        print("Torre 1:", self.torre1)
+        print("Torre 2:", self.torre2)
+        print("Torre 3:", self.torre3)
+        self.resolver_hanoi(self.num_discos, self.torre1, self.torre3, self.torre2, "Torre 1", "Torre 3", "Torre 2")
+        print("Estado final:")
+        print("Torre 1:", self.torre1)
+        print("Torre 2:", self.torre2)
+        print("Torre 3:", self.torre3)
+
+juego = TorresDeHanoi(3)
+juego.jugar()
